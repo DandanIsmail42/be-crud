@@ -1,7 +1,7 @@
 import {Sequelize} from "sequelize";
 
-const db = new Sequelize('freedb_tht_crud','freedb_dandan','wXq3P!f9fZgjWnR',{
-    host: 'sql.freedb.tech',
+const db = new Sequelize('tht_db','root','root',{
+    host: 'localhost',
     dialect: "mysql"
 });
 
