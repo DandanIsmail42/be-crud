@@ -9,6 +9,9 @@ app.use(cors());
 app.use(express.json());
 app.use(FileUpload());
 app.use(express.static("public"));
+app.use("/", (req, res) => {
+    res.json({message: "Hello API Products"})
+})
 app.use(ProductRoute);
 
 app.listen(5000, ()=> console.log('Server Up and Running...'));
