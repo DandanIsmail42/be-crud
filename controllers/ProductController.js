@@ -1,6 +1,7 @@
 import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
+import { response } from "express";
 
 export const getProducts = async(req, res)=>{
     try {
@@ -23,10 +24,20 @@ export const getProductById = async(req, res)=>{
         console.log(error.message);
     }
 }
+export const search = async(req, res)=>{
+    try {
+        const response = await Product.findAll({where: {name: req.query.name}});
+        res.json(response);
+    } catch (error) {
+        console.log(error.message);
+    }
+    console.log(response)
+}
 
 export const saveProduct = (req, res)=>{
     if(req.files === null) return res.status(400).json({msg: "No File Uploaded"});
     const name = req.body.title;
+    const stock = req.body.stock;
     const file = req.files.file;
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
@@ -78,10 +89,11 @@ export const updateProduct = async(req, res)=>{
         });
     }
     const name = req.body.title;
+    const stock = req.body.stock;
     const url = `${req.protocol}://${req.get("host")}/images/${fileName}`;
     
     try {
-        await Product.update({name: name, image: fileName, url: url},{
+        await Product.update({name: name, stock: stock, image: fileName, url: url},{
             where:{
                 id: req.params.id
             }
