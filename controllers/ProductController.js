@@ -2,6 +2,7 @@ import Product from "../models/ProductModel.js";
 import path from "path";
 import fs from "fs";
 import { response } from "express";
+import { Op } from "sequelize";
 
 export const getProducts = async(req, res)=>{
     try {
@@ -24,15 +25,7 @@ export const getProductById = async(req, res)=>{
         console.log(error.message);
     }
 }
-export const search = async(req, res)=>{
-    try {
-        const response = await Product.findAll({where: {name: req.query.name}});
-        res.json(response);
-    } catch (error) {
-        console.log(error.message);
-    }
-    console.log(response)
-}
+
 
 export const saveProduct = (req, res)=>{
     if(req.files === null) return res.status(400).json({msg: "No File Uploaded"});
@@ -51,7 +44,7 @@ export const saveProduct = (req, res)=>{
     file.mv(`./public/images/${fileName}`, async(err)=>{
         if(err) return res.status(500).json({msg: err.message});
         try {
-            await Product.create({name: name, image: fileName, url: url});
+            await Product.create({name: name, stock: stock, image: fileName, url: url});
             res.status(201).json({msg: "Product Created Successfuly"});
         } catch (error) {
             console.log(error.message);
